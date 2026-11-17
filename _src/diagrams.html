@@ -47,10 +47,10 @@ const D = {
    ["Propose","Structured, cited root-cause proposal. PII masked first. Optional route via ai-gateway.","core"],
    ["Check","Citations verified. Policy gate: manual review, L1 or L2 approval by confidence and variance."],
    ["Approve & audit","Maker and checker must differ. Hash-chained audit trail."]],
-  tested: ["<b>Automated checks:</b> unit, integration and UI suites run in CI; latest run on main passed",
+  tested: ["<b>Automated checks:</b> unit, integration and UI suites; CI results shown in a walkthrough",
            "<b>Tenant isolation:</b> PostgreSQL row-level security, integration-tested",
            "<b>AI safeguards:</b> citations, injection scan, hybrid retrieval and policy gate each tested",
-           "<b>Live OpenAI run:</b> four modes compared; the multi-agent mode missed its rule and stays off"],
+           "<b>Real provider:</b> opt-in, excluded from CI; live OpenAI run compared four modes, multi-agent mode stays off"],
   foot: ["Java 21 · Spring Boot · Spring AI · PostgreSQL/pgvector · Kafka · Keycloak","Synthetic data · Code private"]
  },
  "ai-gateway": {
@@ -63,7 +63,7 @@ const D = {
    ["Guard","Sensitive-data detection and masking, risk check, per-tenant token and cost budget reserved.","core"],
    ["Route & call","Eligible model with fallback (stub, OpenAI, Bedrock adapter). A call that may have been sent is never retried."],
    ["Record","One ledger row per call. Transactional outbox to Kafka (off by default)."]],
-  tested: ["<b>Automated checks:</b> extensive unit and integration suites run in CI; latest run on main passed",
+  tested: ["<b>Automated checks:</b> extensive unit and integration suites; CI results shown in a walkthrough",
            "<b>Concurrency:</b> simultaneous requests on one budget and one idempotency key",
            "<b>Sensitive data:</b> classifier, routing and cache-key tests",
            "<b>Events:</b> outbox transactional, relay and payload-privacy tests"],
@@ -83,6 +83,36 @@ const D = {
            "!<b>Not yet:</b> EKA knowledge integration, Compose demo, RERO"],
   foot: ["Java · Python · HTTP contracts · Identity · AI governance","Synthetic data · Code private"]
  },
+ "eka": {
+  badge: "Hybrid AI · Java and Python · Built and tested", title: "Enterprise Knowledge Assistant (EKA)",
+  sub: "Cited answers from tenant-isolated documents, or a refusal when the evidence is weak.",
+  label: "How a request flows",
+  steps: [
+   ["Ask","Angular UI sends the question. The cited answer streams back over server-sent events."],
+   ["Java edge","Spring Cloud Gateway: OIDC sign-in, short-lived internal token, rate limits, audit, circuit breaker."],
+   ["Retrieve","Python FastAPI core. Dense (pgvector) plus full-text, fused with RRF. Row-level security fails closed.","core"],
+   ["Refusal gate","Answers only when the retrieved evidence is strong enough; otherwise declines."],
+   ["Cite","Citations built on the server from the retrieved chunks. The model cannot invent a source."]],
+  tested: ["<b>Automated checks:</b> Python core, Java edge and Angular UI suites, coverage measured",
+           "<b>Retrieval quality:</b> fixed question set scores hit rate and rank; evaluation is part of CI",
+           "<b>Tenant isolation:</b> row-level security exercised by leakage tests on a real PostgreSQL",
+           "!<b>Not yet:</b> chat with a live model (fake model only); AWS is Terraform-validated only"],
+  foot: ["Python · FastAPI · PostgreSQL/pgvector · Java 21 edge · Angular","Synthetic data"]
+ },
+ "ecosystem": {
+  badge: "Platform · Each service built · Integration planned", planned: true, title: "AI Platform Architecture Ecosystem",
+  sub: "Enterprise AI Platform: four layers. The cross-service integration is planned; RERO is proposed only.",
+  label: "Layers",
+  steps: [
+   ["Knowledge · EKA","Tenant-isolated hybrid retrieval with citations and refusal. Built."],
+   ["Decision · RERO","A proposed Python recommendation service. Not built yet.","planned"],
+   ["Execution · reconcile-ai","Java system of record: breaks, maker-checker approvals, hash-chained audit trail. Built."],
+   ["Governance · ai-gateway","Authenticated, masked, budgeted and recorded model calls. Built.","core"]],
+  tested: ["<b>Identity spikes S-1 to S-3</b> passed locally, each with an evidence-register entry",
+           "<b>Contracts:</b> JSON Schemas checked by provider and consumer tests",
+           "!<b>Not yet:</b> EKA knowledge integration, Compose demo, RERO"],
+  foot: ["Java · Python · HTTP contracts · Identity · AI governance","Synthetic data · Code private"]
+ },
  "support-assistant": {
   badge: "Java · Built and tested · Flagship", title: "Enterprise Spring AI Support Assistant",
   sub: "Answers from company documents with citations, or declines when the evidence is weak.",
@@ -92,7 +122,7 @@ const D = {
    ["Ground","pgvector search with the access filter inside the SQL. Declines when evidence is weak."],
    ["One governed path","Admit (sensitive-data policy, size check, budget reservation) → guarded call → settle budget.","core"],
    ["Answer","Citations validated against the retrieved chunks, then streamed to the UI."]],
-  tested: ["<b>End to end</b> with real model API keys and synthetic data, not only mocks",
+  tested: ["<b>End to end</b> run manually against real models (Ollama, OpenAI), outside CI; tests use fakes",
            "<b>Concurrency-safe budget:</b> one atomic SQL update",
            "<b>Ownership in SQL:</b> someone else's order returns the same 404 as a missing one",
            "<b>Mutation-checked:</b> removing a rule makes tests fail"],
