@@ -9,9 +9,9 @@ This repository holds the portfolio page and one evidence folder per project: ov
 | Project | Code | Evidence |
 |---|---|---|
 | Enterprise Spring AI Support Assistant | Public | [projects/support-assistant](projects/support-assistant/README.md) |
-| Reconciliation Break Resolution Copilot (reconcile-ai) | Private | [projects/reconcile-ai](projects/reconcile-ai/README.md) |
-| AI Gateway | Private | [projects/ai-gateway](projects/ai-gateway/README.md) |
-| Enterprise AI Platform Integration | Private | [projects/platform](projects/platform/README.md) |
+| Reconciliation Break Resolution Copilot (reconcile-ai) | Private | [Details](projects/reconcile-ai/README.md) · [BRD](projects/reconcile-ai/BRD.md) · [TDD](projects/reconcile-ai/TDD.md) |
+| AI Gateway | Private | [Details](projects/ai-gateway/README.md) · [BRD](projects/ai-gateway/BRD.md) · [TDD](projects/ai-gateway/TDD.md) |
+| Enterprise AI Platform Integration | Private | [Details](projects/platform/README.md) · [BRD](projects/platform/BRD.md) · [TDD](projects/platform/TDD.md) |
 
 Other public repositories (Enterprise Knowledge Assistant, ops-agent, Enterprise Spring AI Playbook) are linked from the portfolio page.
 

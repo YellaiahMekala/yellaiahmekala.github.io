@@ -256,6 +256,14 @@
     .card.featured { grid-column: 1 / -1; border-color: #b9d3f7; }
     .card.featured h3 { font-size: 1.45rem; }
     .card { min-width: 0; }
+    .project-grid.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .card.small { padding: 16px 18px; border-radius: 12px; box-shadow: none; }
+    .card.small h3 { font-size: 1rem; margin: 0 0 4px; }
+    .card.small p { font-size: .85rem; margin: 8px 0; }
+    .card.small .stack { font-size: .76rem; }
+    .card.small .status { font-size: .68rem; margin-bottom: 8px; }
+    .card.small .card-links { margin-top: 10px; gap: 12px; font-size: .85rem; }
+    @media (max-width: 900px) { .project-grid.compact { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     .card h3 a { color: inherit; text-decoration: none; }
     .card h3 a:hover { color: var(--blue); text-decoration: underline; }
     .arch-title, .evidence-title { margin: 22px 0 10px; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); font-weight: 800; }
@@ -313,7 +321,7 @@
       .nav { align-items: flex-start; flex-direction: column; padding: 13px 0; gap: 8px; }
       .nav-links { gap: 12px 17px; }
       .nav-links a { font-size: .86rem; }
-      .project-grid, .cert-grid { grid-template-columns: minmax(0, 1fr); }
+      .project-grid, .project-grid.compact, .cert-grid { grid-template-columns: minmax(0, 1fr); }
       .timeline-item, .card { padding: 20px; }
       .hero-actions .button { width: 100%; }
     }
@@ -441,73 +449,8 @@
             Repository documentation is the source of truth for each project’s current status.
           </p>
         </div>
-        <h3 class="group-title">Built and tested</h3>
+        <h3 class="group-title">Major AI portfolio projects: enterprise, production-style</h3>
         <div class="project-grid">
-          <article class="card featured">
-            <span class="status">Java · Built and tested · Flagship</span>
-            <h3><a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">Enterprise Spring AI Support Assistant</a></h3>
-            <p>
-              A customer-support assistant that answers from company documents with citations,
-              or declines when the evidence is weak. Every model call passes through one governed
-              path with a per-customer token budget, sensitive-data checks, and a circuit breaker.
-              Keycloak sign-in with customer and agent roles; Angular 20 UI with streamed answers.
-            </p>
-            <p class="stack">Java 21 · Spring Boot · Spring AI · PostgreSQL/pgvector · Keycloak · Resilience4j · Angular</p>
-                        <div class="arch-title">How a request flows</div>
-            <div class="arch" role="group" aria-label="Request flow architecture">
-              <div class="arch-step"><span class="arch-num">1</span><strong>Sign in &amp; ask</strong><small>Angular 20 UI with streamed answers. Keycloak roles: customer and agent.</small></div>
-              <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step"><span class="arch-num">2</span><strong>Ground</strong><small>pgvector search with the access filter inside the SQL. Declines when evidence is weak.</small></div>
-              <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step arch-core"><span class="arch-num">3</span><strong>One governed path for every model call</strong><small>Admit (sensitive-data policy, size check, token-budget reservation) &rarr; guarded call (timeout, retry, circuit breaker; Ollama or OpenAI-compatible) &rarr; settle the budget.</small></div>
-              <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step"><span class="arch-num">4</span><strong>Answer</strong><small>Citations validated against the retrieved chunks, then streamed to the UI.</small></div>
-            </div>
-            <div class="evidence-title">How it was tested</div>
-            <ul class="evidence">
-              <li><strong>End to end with real model API keys</strong> and realistic synthetic sample data, not only mocks.</li>
-              <li><strong>Concurrency-safe budget:</strong> simultaneous requests cannot overspend a customer&rsquo;s token budget (one atomic SQL update).</li>
-              <li><strong>Ownership enforced in SQL:</strong> asking for someone else&rsquo;s order returns the same 404 as a missing one.</li>
-              <li><strong>Mutation-checked:</strong> deliberately removing the ownership rule or the sensitive-data rejection makes tests fail.</li>
-            </ul>
-            <div class="card-links">
-              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">View repository →</a>
-              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <span class="status">Java · Pattern reference</span>
-            <h3><a href="https://github.com/YellaiahMekala/Enterprise-SpringAI-Playbook" target="_blank" rel="noopener noreferrer">Enterprise Spring AI Playbook</a></h3>
-            <p>
-              Production-minded patterns for enterprise LLM backends: tool calling, durable chat
-              memory, custom advisors, multimodal (image and audio), API-key security, and validated
-              REST contracts. Each capability sits behind its own service so it can be read, tested
-              and reused alone. A focused reference, not a finished product; the test suite runs
-              without an API key.
-            </p>
-            <p class="stack">Java 21 · Spring Boot 4 · Spring AI 2.0 · Tool calling · Advisors · Multimodal</p>
-            <div class="card-links">
-              <a href="https://github.com/YellaiahMekala/Enterprise-SpringAI-Playbook" target="_blank" rel="noopener noreferrer">View repository →</a>
-              <a href="https://github.com/YellaiahMekala/Enterprise-SpringAI-Playbook/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <span class="status">Hybrid AI project · Java and Python · Built and tested</span>
-            <h3><a href="https://github.com/YellaiahMekala/Enterprise-Knowledge-Assistant" target="_blank" rel="noopener noreferrer">Enterprise Knowledge Assistant (EKA)</a></h3>
-            <p>
-              A document ingestion and retrieval project exploring hybrid search, citations,
-              refusal behavior, and tenant isolation. It demonstrates how Python AI components
-              can fit into a broader Java enterprise architecture.
-            </p>
-            <p class="stack">Python · FastAPI · PostgreSQL/pgvector · Embeddings · Java edge</p>
-            <div class="card-links">
-              <a href="https://github.com/YellaiahMekala/Enterprise-Knowledge-Assistant" target="_blank" rel="noopener noreferrer">View repository →</a>
-              <a href="https://github.com/YellaiahMekala/Enterprise-Knowledge-Assistant/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
-            </div>
-          </article>
-
           <article class="card featured">
             <span class="status">Java · Featured project · Built and tested</span>
             <h3>Reconciliation Break Resolution Copilot</h3>
@@ -538,6 +481,11 @@
               <li><strong>Run live against OpenAI:</strong> four investigation modes were compared on a fixed question set. The multi-agent supervised mode did not meet its decision rule, so it stays off by default.</li>
             </ul>
             <p class="arch-note">Not yet verified: the ai-gateway route is proven against a fake gateway only, not the real one. Code is private; evidence and walkthrough available on request.</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/reconcile-ai/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/reconcile-ai/BRD.md" target="_blank" rel="noopener noreferrer">BRD →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/reconcile-ai/TDD.md" target="_blank" rel="noopener noreferrer">TDD →</a>
+            </div>
           </article>
 
           <article class="card featured">
@@ -569,10 +517,13 @@
               <li><strong>Events:</strong> outbox tests cover transactional writes, the relay and a payload privacy check.</li>
             </ul>
             <p class="arch-note">Not yet verified: Bedrock and AWS were not run live (fake endpoint and Terraform plan only). Code is private; evidence and walkthrough available on request.</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/ai-gateway/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/ai-gateway/BRD.md" target="_blank" rel="noopener noreferrer">BRD →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/ai-gateway/TDD.md" target="_blank" rel="noopener noreferrer">TDD →</a>
+            </div>
           </article>
-        </div>
-        <h3 class="group-title">In progress and exploratory</h3>
-        <div class="project-grid">
+
           <article class="card featured">
             <span class="status-planned status">Platform · In progress</span>
             <h3>Enterprise AI Platform Integration</h3>
@@ -599,19 +550,60 @@
               <li><strong>Contracts:</strong> cross-service JSON Schemas are checked by provider and consumer tests in the service repos.</li>
             </ul>
             <p class="arch-note">Not yet done: the EKA knowledge integration, the end-to-end Compose demo and RERO are not started. Code is private; evidence and walkthrough available on request.</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/BRD.md" target="_blank" rel="noopener noreferrer">BRD →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/TDD.md" target="_blank" rel="noopener noreferrer">TDD →</a>
+            </div>
           </article>
 
-          <article class="card">
-            <span class="status-review status">AI workflow · Portfolio project</span>
-            <h3><a href="https://github.com/YellaiahMekala/ops-agent" target="_blank" rel="noopener noreferrer">Enterprise Agentic Workflow Orchestrator</a></h3>
+          <article class="card featured">
+            <span class="status">Hybrid AI project · Java and Python · Built and tested</span>
+            <h3><a href="https://github.com/YellaiahMekala/Enterprise-Knowledge-Assistant" target="_blank" rel="noopener noreferrer">Enterprise Knowledge Assistant (EKA)</a></h3>
             <p>
-              A portfolio project exploring multi-agent workflows, LangChain4j, evaluation
-              loops, role-based access controls, and controlled access to application data.
-              Refer to its README for the current implementation and demo details.
+              A document ingestion and retrieval project exploring hybrid search, citations,
+              refusal behavior, and tenant isolation. It demonstrates how Python AI components
+              can fit into a broader Java enterprise architecture.
             </p>
-            <p class="stack">Java · LangChain4j · Agentic workflows · RBAC</p>
+            <p class="stack">Python · FastAPI · PostgreSQL/pgvector · Embeddings · Java edge</p>
             <div class="card-links">
-              <a href="https://github.com/YellaiahMekala/ops-agent" target="_blank" rel="noopener noreferrer">View repository →</a>
+              <a href="https://github.com/YellaiahMekala/Enterprise-Knowledge-Assistant" target="_blank" rel="noopener noreferrer">View repository →</a>
+              <a href="https://github.com/YellaiahMekala/Enterprise-Knowledge-Assistant/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
+            </div>
+          </article>
+        </div>
+        <h3 class="group-title">More projects</h3>
+        <div class="project-grid compact">
+          <article class="card small">
+            <span class="status">Java · Built and tested · Flagship</span>
+            <h3><a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">Enterprise Spring AI Support Assistant</a></h3>
+            <p>Answers customer questions from company documents with citations, or declines when the evidence is weak. Every model call goes through one governed path with a token budget, sensitive-data checks and a circuit breaker.</p>
+            <p>Tested end to end with real model API keys, with concurrency, ownership and mutation checks.</p>
+            <p class="stack">Java 21 · Spring Boot · Spring AI · pgvector · Keycloak · Angular</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">Repository →</a>
+              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
+            </div>
+          </article>
+
+          <article class="card small">
+            <span class="status-review status">Java · AI agent · Portfolio project</span>
+            <h3><a href="https://github.com/YellaiahMekala/ops-agent" target="_blank" rel="noopener noreferrer">ops-agent</a></h3>
+            <p>An incident-triage agent for the gateway demo stack. An alert arrives from Alertmanager; the agent investigates with four read-only, audited tools (Prometheus, logs, runbook, health) and emails the owner a summary. It changes nothing.</p>
+            <p class="stack">Java · LangChain4j · Prometheus · Alertmanager</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/ops-agent" target="_blank" rel="noopener noreferrer">Repository →</a>
+            </div>
+          </article>
+
+          <article class="card small">
+            <span class="status">Java · Pattern reference</span>
+            <h3><a href="https://github.com/YellaiahMekala/Enterprise-SpringAI-Playbook" target="_blank" rel="noopener noreferrer">Enterprise Spring AI Playbook</a></h3>
+            <p>Production-minded patterns for enterprise LLM backends: tool calling, durable chat memory, custom advisors, multimodal input, API-key security and validated REST contracts. A focused reference, not a finished product; its tests run without an API key.</p>
+            <p class="stack">Java 21 · Spring Boot 4 · Spring AI 2.0</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/Enterprise-SpringAI-Playbook" target="_blank" rel="noopener noreferrer">Repository →</a>
+              <a href="https://github.com/YellaiahMekala/Enterprise-SpringAI-Playbook/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
             </div>
           </article>
         </div>
