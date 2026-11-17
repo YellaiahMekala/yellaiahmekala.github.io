@@ -732,13 +732,20 @@
         <div class="timeline">
           <article class="timeline-item current">
             <div class="timeline-top">
-              <h3>Independent AI Engineering <span class="badge-now">Current</span></h3>
+              <h3>Independent AI Engineer · Career sabbatical <span class="badge-now">Current</span></h3>
               <span class="date">May 2025 – Present</span>
             </div>
+            <div class="engagements" aria-label="Focus">
+              <p class="engagement"><span class="eng-domain">AI Engineering</span><strong>Focus:</strong> Production-grade Java AI platforms for regulated domains (portfolio projects)</p>
+            </div>
             <ul>
-              <li>Designing, building, and testing Spring AI portfolio projects covering RAG, model governance, tool calling, and agentic workflows (see Projects).</li>
-              <li>Completed generative AI learning for Java developers, including the IBM Generative AI for Java and Spring Developers specialization (Jul 2026) and DataCamp AI Fundamentals (Jun 2026).</li>
-              <li>Available to join immediately.</li>
+              <li>Built ReconcileAI, a multi-tenant financial-reconciliation platform in Java 21 and Spring Boot 3.5. A Spring AI pipeline investigates breaks with hybrid retrieval over pgvector, and each investigation runs through citation checks, a policy gate and maker-checker approval on a hash-chained audit trail.</li>
+              <li>Designed an AI governance gateway in Spring Boot that every model call goes through. It enforces per-tenant budgets, sensitive-data and risk policies, idempotent request handling and an invocation ledger. Calls whose outcome is unknown are held until a second person reconciles them, and are never retried.</li>
+              <li>Built agent features with LangChain4j: an investigation agent and supervised multi-agent modes using read-only, audited @Tools, plus a standalone incident-triage agent driven by Alertmanager webhooks with step, token and deadline limits.</li>
+              <li>Integrated a Python retrieval service (FastAPI, pgvector) with the Java platform under one Keycloak realm. Each service accepts only tokens issued for its own audience, and tenants are isolated end to end.</li>
+              <li>Measured AI quality and cost with a 28-case evaluation harness on real models (single call: 27 of 28 root causes correct). When multi-agent designs cost 8–12x more for no real gain, I published that as a negative result and kept single call as the default.</li>
+              <li>Shipped with production practices: Testcontainers integration suites (300+ tests), GitHub Actions CI with SBOM and Trivy image scanning, Kubernetes with KEDA autoscaling on queue depth, a Redis rate limit shared across replicas, Terraform for AWS (validated on LocalStack), and Prometheus/Grafana/OpenTelemetry observability.</li>
+              <li>Completed structured generative AI learning alongside the projects: IBM Generative AI for Java and Spring Developers specialization, DataCamp Associate AI Engineer for Developers, and DataCamp AI Fundamentals (verified links under Certifications).</li>
             </ul>
           </article>
 
@@ -784,8 +791,12 @@
               <p class="engagement"><span class="eng-domain">Manufacturing</span><strong>Client:</strong> Agricultural machinery manufacturer<span class="sep">|</span><strong>Project:</strong> PIM (Product Information Management)</p>
             </div>
             <ul>
-              <li>Designed and exposed intranet Spring Boot microservice APIs, secured via API Connect, to expose Big Data EOS datasets to downstream business applications with strict access control.</li>
-              <li>Ensured a multi-module architecture supporting scalability, utilizing asynchronous Kafka communication to enhance system responsiveness and reliability.</li>
+              <li>Delivered backend microservices for the MetLife EOS application in the health insurance domain, built for high-volume transactions and seamless integration with business applications.</li>
+              <li>Designed and exposed intranet Spring Boot microservice APIs, secured via API Connect, to expose Big Data EOS datasets to downstream business applications with strict access control; worked with product teams on requirements analysis and feature delivery.</li>
+              <li>Ensured a multi-module architecture supporting scalability, using asynchronous Kafka communication for system responsiveness and reliability, with JUnit and Mockito unit test suites across the microservice modules.</li>
+              <li>Developed and enhanced core features and REST APIs of the RIS Financial Work Station (FWS), a retirement and income product platform, under strict SLA requirements in a regulated financial-services domain.</li>
+              <li>Built Angular components and Java APIs for WMG&rsquo;s MEAD music licensing platform, with XML/XSD data validation pipelines and FTL template integrations.</li>
+              <li>Executed an SAP Commerce (Hybris) Back Office upgrade and storefront enhancements for a global agricultural machinery manufacturer&rsquo;s multi-region e-commerce catalog.</li>
             </ul>
           </article>
         </div>
