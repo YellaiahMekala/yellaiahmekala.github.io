@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Architecture diagrams (source for LinkedIn images)</title>
+<style>
+  :root { --ink:#17243b; --muted:#59677d; --blue:#1769e0; --line:#dce5f0; --pale:#f3f7fc; --green:#147d64; --amber:#8b5a00; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 627px; overflow: hidden; background: #fff; color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .frame { width: 1200px; height: 627px; padding: 38px 48px 30px; display: flex; flex-direction: column; background:
+    radial-gradient(ellipse at 100% 0%, rgba(23,105,224,.10), transparent 40%), #fff; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .badge { display: inline-block; padding: 5px 12px; border-radius: 999px; background: #eaf7f2; color: var(--green); font-size: 14px; font-weight: 800; }
+  .badge.planned { background: #fff5df; color: var(--amber); }
+  h1 { margin: 12px 0 6px; font-size: 40px; letter-spacing: -.03em; line-height: 1.1; }
+  .sub { margin: 0; color: var(--muted); font-size: 18px; max-width: 900px; line-height: 1.4; }
+  .label { margin: 26px 0 12px; color: var(--blue); font-size: 14px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .flow { display: flex; align-items: stretch; gap: 10px; }
+  .step { flex: 1; padding: 16px 14px; border: 1.5px solid var(--line); border-radius: 16px; background: var(--pale); display: flex; flex-direction: column; gap: 8px; }
+  .step.core { background: #eaf2ff; border-color: #9fc0f0; flex: 1.35; }
+  .step.planned { background: #fff; border-style: dashed; }
+  .num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #fff; font-weight: 800; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+  .step strong { font-size: 18px; }
+  .step small { color: var(--muted); font-size: 14px; line-height: 1.42; }
+  .tagp { align-self: flex-start; padding: 1px 9px; border-radius: 999px; background: #fff5df; color: var(--amber); font-size: 12px; font-weight: 800; }
+  .arrow { align-self: center; color: var(--blue); font-weight: 800; font-size: 26px; }
+  .tested { margin-top: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 28px; }
+  .tested div { position: relative; padding-left: 24px; color: #43536b; font-size: 15px; line-height: 1.4; }
+  .tested div::before { content: "\2713"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+  .tested b { color: var(--ink); }
+  .tested div.no::before { content: "\2013"; color: var(--amber); }
+  .foot { margin-top: auto; display: flex; justify-content: space-between; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+</style>
+</head>
+<body>
+<div class="frame" id="app"></div>
+<script>
+const D = {
+ "reconcile-ai": {
+  badge: "Java · Featured project · Built and tested", title: "Reconciliation Break Resolution Copilot",
+  sub: "AI proposes, policy and people decide. The model never resolves a break on its own.",
+  label: "How a request flows",
+  steps: [
+   ["Submit","Break and evidence over REST. Tenant only from the JWT. Evidence de-duplicated and chunked."],
+   ["Retrieve","Async job. Hybrid search: pgvector + keyword, fused with RRF. Chunks scanned for prompt injection."],
+   ["Propose","Structured, cited root-cause proposal. PII masked first. Optional route via ai-gateway.","core"],
+   ["Check","Citations verified. Policy gate: manual review, L1 or L2 approval by confidence and variance."],
+   ["Approve & audit","Maker and checker must differ. Hash-chained audit trail."]],
+  tested: ["<b>Automated checks:</b> unit, integration and UI suites run in CI; latest run on main passed",
+           "<b>Tenant isolation:</b> PostgreSQL row-level security, integration-tested",
+           "<b>AI safeguards:</b> citations, injection scan, hybrid retrieval and policy gate each tested",
+           "<b>Live OpenAI run:</b> four modes compared; the multi-agent mode missed its rule and stays off"],
+  foot: ["Java 21 · Spring Boot · Spring AI · PostgreSQL/pgvector · Kafka · Keycloak","Synthetic data · Code private"]
+ },
+ "ai-gateway": {
+  badge: "Java · Featured project · Built and tested", title: "AI Gateway",
+  sub: "One governed path to language models: authenticated, de-duplicated, masked, budgeted and recorded.",
+  label: "How a request flows",
+  steps: [
+   ["Authenticate","RS256 JWT. Tenant only from the token; tenant headers rejected."],
+   ["Admit","Required Idempotency-Key, rate and size limits. A retry replays the stored result."],
+   ["Guard","Sensitive-data detection and masking, risk check, per-tenant token and cost budget reserved.","core"],
+   ["Route & call","Eligible model with fallback (stub, OpenAI, Bedrock adapter). A call that may have been sent is never retried."],
+   ["Record","One ledger row per call. Transactional outbox to Kafka (off by default)."]],
+  tested: ["<b>Automated checks:</b> extensive unit and integration suites run in CI; latest run on main passed",
+           "<b>Concurrency:</b> simultaneous requests on one budget and one idempotency key",
+           "<b>Sensitive data:</b> classifier, routing and cache-key tests",
+           "<b>Events:</b> outbox transactional, relay and payload-privacy tests"],
+  foot: ["Java · Spring Boot · PostgreSQL · Redis · Kafka","Synthetic data · Code private"]
+ },
+ "platform": {
+  badge: "Platform · In progress · Target design", planned: true, title: "Enterprise AI Platform Integration",
+  sub: "Design until verified: the end-to-end integration is not yet demonstrated.",
+  label: "Target request flow",
+  steps: [
+   ["Identity","One Keycloak realm, a client per tenant, an audience per service. Spike S-1 passed."],
+   ["reconcile-ai","Java system of record: breaks, maker-checker approvals, audit trail."],
+   ["EKA knowledge","Tenant-isolated retrieval for evidence. Identity reaching EKA passed spike S-2; integration not started.","planned"],
+   ["ai-gateway","Governed model calls. Route built in reconcile-ai, off by default; spike S-3 recorded usage by tenant.","core"]],
+  tested: ["<b>Identity spikes S-1 to S-3</b> passed locally, each with an evidence-register entry",
+           "<b>Contracts:</b> JSON Schemas checked by provider and consumer tests",
+           "!<b>Not yet:</b> EKA knowledge integration, Compose demo, RERO"],
+  foot: ["Java · Python · HTTP contracts · Identity · AI governance","Synthetic data · Code private"]
+ },
+ "support-assistant": {
+  badge: "Java · Built and tested · Flagship", title: "Enterprise Spring AI Support Assistant",
+  sub: "Answers from company documents with citations, or declines when the evidence is weak.",
+  label: "How a request flows",
+  steps: [
+   ["Sign in & ask","Angular 20 UI with streamed answers. Keycloak roles: customer and agent."],
+   ["Ground","pgvector search with the access filter inside the SQL. Declines when evidence is weak."],
+   ["One governed path","Admit (sensitive-data policy, size check, budget reservation) → guarded call → settle budget.","core"],
+   ["Answer","Citations validated against the retrieved chunks, then streamed to the UI."]],
+  tested: ["<b>End to end</b> with real model API keys and synthetic data, not only mocks",
+           "<b>Concurrency-safe budget:</b> one atomic SQL update",
+           "<b>Ownership in SQL:</b> someone else's order returns the same 404 as a missing one",
+           "<b>Mutation-checked:</b> removing a rule makes tests fail"],
+  foot: ["Java 21 · Spring Boot · Spring AI · pgvector · Keycloak · Resilience4j · Angular","Synthetic data · Public repository"]
+ }
+};
+const key = (location.hash || "#reconcile-ai").slice(1);
+const d = D[key] || D["reconcile-ai"];
+const steps = d.steps.map((s, i) => `
+  ${i ? '<div class="arrow">&rarr;</div>' : ''}
+  <div class="step ${s[2] || ''}"><div class="num">${i + 1}</div><strong>${s[0]}</strong>${s[2]==='planned' ? '<span class="tagp">Planned</span>' : ''}<small>${s[1]}</small></div>`).join("");
+document.getElementById("app").innerHTML = `
+  <div class="top"><div><span class="badge ${d.planned ? 'planned' : ''}">${d.badge}</span><h1>${d.title}</h1><p class="sub">${d.sub}</p></div></div>
+  <div class="label">${d.label}</div>
+  <div class="flow">${steps}</div>
+  <div class="label" style="margin-top:22px">How it was tested</div>
+  <div class="tested">${d.tested.map(t => t[0] === "!" ? `<div class="no">${t.slice(1)}</div>` : `<div>${t}</div>`).join("")}</div>
+  <div class="foot"><span>${d.foot[0]}</span><span>${d.foot[1]}</span></div>`;
+</script>
+</body>
+</html>
