@@ -277,28 +277,23 @@
     .arch-num { width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: #fff; font-size: .78rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
     .arch-core { background: #eaf2ff; border-color: #9fc0f0; flex: 1.5; }
     .arch-arrow { align-self: center; color: var(--blue); font-weight: 800; font-size: 1.2rem; }
+    .platform-frame { padding: 14px; border: 1.5px solid #c9dcf7; border-radius: 18px; background: linear-gradient(180deg, #f7faff, #fff); }
+    .arch-layer { font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); font-weight: 800; }
+    .arch-planned { border-style: dashed; background: #fff; }
+    .pill { align-self: flex-start; padding: 1px 9px; border-radius: 999px; font-size: .66rem; font-weight: 800; }
+    .pill-ok { background: #e3f5ee; color: var(--green); }
+    .pill-plan { background: #fff5df; color: #8b5a00; }
+    .platform-base { margin-top: 10px; padding: 9px 14px; border-radius: 10px; background: var(--navy); color: #dbe6f7; font-size: .8rem; }
+    .platform-base strong { color: #fff; margin-right: 8px; }
+    .principle-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .principle-grid div { padding: 10px 12px; border-left: 3px solid var(--blue); border-radius: 8px; background: var(--pale); display: flex; flex-direction: column; gap: 3px; }
+    .principle-grid strong { font-size: .82rem; color: var(--ink); }
+    .principle-grid span { font-size: .76rem; line-height: 1.45; color: var(--muted); }
+    @media (max-width: 900px) { .principle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 600px) { .principle-grid { grid-template-columns: minmax(0, 1fr); } .arch-step { min-width: 150px; } }
+    .timeline li strong { color: var(--ink); font-weight: 700; }
     .arch-note { margin: 10px 0 0; color: var(--muted); font-size: .85rem; }
-    /* Platform flow: light stepper, no boxes, type 20% smaller than the boxed flows (.95/.8rem -> .76/.64rem) */
-    .flow-lite { list-style: none; margin: 0; padding: 6px 4px 10px; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(150px, 1fr); gap: 28px; overflow-x: auto; }
-    .flow-lite li { position: relative; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-    .flow-lite li:not(:last-child)::after { content: ""; position: absolute; top: 10px; left: 32px; right: -22px; border-top: 2px solid #c9dcf7; }
-    .flow-lite li:not(:last-child)::before { content: ""; position: absolute; top: 5px; right: -24px; border-left: 7px solid #9fc0f0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
-    .fl-num { align-self: flex-start; width: 22px; height: 22px; margin-bottom: 4px; border-radius: 50%; background: var(--blue); color: #fff; font-size: .68rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; animation: fl-num-glow 9s ease-in-out infinite; }
-    .flow-lite li:nth-child(2) .fl-num { animation-delay: .7s; }
-    .flow-lite li:nth-child(3) .fl-num { animation-delay: 1.4s; }
-    .flow-lite li:nth-child(4) .fl-num { animation-delay: 2.1s; }
-    .flow-lite strong { font-size: .76rem; color: var(--ink); }
-    .flow-lite small { font-size: .64rem; line-height: 1.5; color: var(--muted); }
-    .fl-core strong { color: var(--blue-dark); }
-    .fl-planned .fl-num { background: #fff; color: var(--blue); border: 1.5px dashed var(--blue); }
-    .fl-tag { display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 999px; background: #fff5df; color: #8b5a00; font-size: .62rem; font-weight: 800; vertical-align: middle; }
-    @keyframes fl-num-glow { 0%, 14%, 100% { box-shadow: none; } 3%, 11% { box-shadow: 0 0 0 4px rgba(23, 105, 224, .18); } }
     #architecture { scroll-margin-top: 90px; }
-    .fl-layer { font-size: .56rem; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); font-weight: 800; }
-    .fl-tag.fl-ok { background: #e3f5ee; color: var(--green); }
-    .principles-lite { margin: 0; padding: 0 0 0 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 28px; font-size: .72rem; line-height: 1.5; color: var(--muted); }
-    .principles-lite strong { color: var(--ink); }
-    @media (max-width: 600px) { .principles-lite { grid-template-columns: minmax(0, 1fr); } }
     /* "Live" flow: a highlight travels left to right through the steps, then rests. Off for reduced motion. */
     @keyframes arch-step-glow {
       0%, 14%, 100% { border-color: var(--line); box-shadow: none; }
@@ -374,7 +369,7 @@
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .arch > .arch-step, .arch > .arch-arrow, .fl-num { animation: none; }
+      .arch > .arch-step, .arch > .arch-arrow { animation: none; }
       *, *::before, *::after { transition-duration: .01ms !important; }
     }
   </style>
@@ -465,21 +460,24 @@
         <div class="about-grid">
           <div class="about-copy">
             <p>
-              I’m a Java backend engineer with experience delivering enterprise services
-              across financial services, insurance, manufacturing, and media. My work has
-              included Spring Boot APIs, Kafka-based integration, secure credential
-              management, CI/CD, containerized deployments, and Angular integrations.
+              I&rsquo;m a senior Java backend engineer with over five years of experience delivering
+              enterprise services in financial services, insurance, manufacturing and media. Much of
+              that time was spent on high-volume reconciliation systems for banking clients. My work
+              has included Spring Boot APIs, Kafka-based integration, secure credential management,
+              CI/CD, containerized deployments and Angular front ends.
             </p>
             <p>
-              My current focus is enterprise AI engineering: applying Spring AI and
-              LangChain4j, exploring retrieval-augmented generation and model governance,
-              and connecting Java systems with Python-based AI components where appropriate.
-              I’m particularly interested in systems where AI can assist, while deterministic
-              application logic and authorized people retain control of important decisions.
+              My current focus is enterprise AI engineering: building production-style systems with
+              Spring AI and LangChain4j. That includes retrieval-augmented generation, governed model
+              access with budgets, audit and policy checks, and Java services that work alongside
+              Python AI components where that fits. I design for systems where AI assists, while
+              deterministic logic and authorized people keep control of important decisions. I measure
+              quality and cost before claiming results, and I publish the experiments that didn&rsquo;t
+              pay off.
             </p>
             <p>
-              The projects shown here are independent demonstrations. They use synthetic
-              data and do not contain or derive from client or employer systems.
+              The projects shown here are independent portfolio work. They use synthetic data and do
+              not contain or derive from client or employer systems.
             </p>
           </div>
           <div class="skill-card">
@@ -656,29 +654,28 @@
               tests and demonstration have passed.
             </p>
             <p class="stack">Java · Python · HTTP contracts · Identity · AI governance</p>
-            <div class="arch-title">Target request flow</div>
-            <ol class="flow-lite" aria-label="Platform target request flow">
-              <li><span class="fl-num">1</span><strong>Identity</strong><small>One Keycloak realm, a client per tenant, and an audience per service. Local spike S-1 passed.</small></li>
-              <li><span class="fl-num">2</span><strong>reconcile-ai</strong><small>Java system of record: breaks, maker-checker approvals and the audit trail.</small></li>
-              <li><span class="fl-num">3</span><strong>EKA knowledge <span class="fl-tag">Built · integration pending</span></strong><small>Tenant-isolated retrieval for evidence. EKA is built; service identity reaching it passed spike S-2. Only the integration is pending.</small></li>
-              <li class="fl-core"><span class="fl-num">4</span><strong>ai-gateway</strong><small>Governed model calls. The route is built in reconcile-ai and off by default; spike S-3 recorded usage against the token&rsquo;s tenant.</small></li>
-            </ol>
-            <div class="arch-title" id="architecture">Architecture · Enterprise AI Platform</div>
-            <ol class="flow-lite" aria-label="AI platform ecosystem: four layers">
-              <li><span class="fl-num">K</span><span class="fl-layer">Knowledge layer</span><strong>EKA <span class="fl-tag fl-ok">Built</span></strong><small>Tenant-isolated hybrid retrieval with citations and refusal. Python core, Java edge, Angular UI.</small></li>
-              <li class="fl-planned"><span class="fl-num">D</span><span class="fl-layer">Decision layer</span><strong>RERO <span class="fl-tag">Proposed</span></strong><small>A proposed Python recommendation service. Not built yet.</small></li>
-              <li><span class="fl-num">E</span><span class="fl-layer">Execution layer</span><strong>reconcile-ai <span class="fl-tag fl-ok">Built</span></strong><small>Java system of record: breaks, maker-checker approvals and a hash-chained audit trail.</small></li>
-              <li class="fl-core"><span class="fl-num">G</span><span class="fl-layer">Governance layer</span><strong>ai-gateway <span class="fl-tag fl-ok">Built</span></strong><small>Authenticated, masked, budgeted and recorded model calls.</small></li>
-            </ol>
+            <div class="arch-title" id="architecture">Architecture</div>
+            <div class="platform-frame" role="group" aria-label="Platform architecture: four layers on a shared identity and governance base">
+              <div class="arch">
+                <div class="arch-step"><span class="arch-layer">Knowledge layer</span><strong>EKA</strong><span class="pill pill-ok">Built · integration pending</span><small>Tenant-isolated hybrid retrieval with citations and refusal. Python core, Java edge, Angular UI.</small></div>
+                <div class="arch-arrow" aria-hidden="true">&rarr;</div>
+                <div class="arch-step arch-planned"><span class="arch-layer">Decision layer</span><strong>RERO</strong><span class="pill pill-plan">Proposed</span><small>Python recommendation service. Not built yet.</small></div>
+                <div class="arch-arrow" aria-hidden="true">&rarr;</div>
+                <div class="arch-step"><span class="arch-layer">Execution layer</span><strong>reconcile-ai</strong><span class="pill pill-ok">Built</span><small>Java system of record: breaks, maker-checker approvals, hash-chained audit trail.</small></div>
+                <div class="arch-arrow" aria-hidden="true">&rarr;</div>
+                <div class="arch-step arch-core"><span class="arch-layer">Governance layer</span><strong>ai-gateway</strong><span class="pill pill-ok">Built</span><small>Every model call authenticated, masked, budgeted and recorded.</small></div>
+              </div>
+              <div class="platform-base"><strong>Shared identity</strong> One Keycloak realm · a client per tenant · an audience per service · tenant taken only from the signed token</div>
+            </div>
             <div class="arch-title">Design principles</div>
-            <ul class="principles-lite">
-              <li><strong>Model proposes, humans decide.</strong> Cited proposals; maker and checker are different people.</li>
-              <li><strong>Retrieval before generation.</strong> Answers come from cited evidence; weak evidence means a refusal.</li>
-              <li><strong>Evaluation over intuition.</strong> Fixed question sets and a written decision rule.</li>
-              <li><strong>Least-privilege tool access.</strong> Read-only, role-checked, audited tools; tenant only from the signed token.</li>
-              <li><strong>Auditability by design.</strong> Hash-chained audit trail and one ledger row per model call.</li>
-              <li><strong>Deterministic business logic.</strong> Approvals, budgets and idempotency are tested code, not prompts.</li>
-            </ul>
+            <div class="principle-grid">
+              <div><strong>Model proposes, humans decide</strong><span>Cited proposals; maker and checker are different people.</span></div>
+              <div><strong>Retrieval before generation</strong><span>Answers come from cited evidence; weak evidence means a refusal.</span></div>
+              <div><strong>Evaluation over intuition</strong><span>Fixed question sets and a written decision rule.</span></div>
+              <div><strong>Least-privilege tool access</strong><span>Read-only, role-checked, audited tools.</span></div>
+              <div><strong>Auditability by design</strong><span>Hash-chained audit trail; one ledger row per model call.</span></div>
+              <div><strong>Deterministic business logic</strong><span>Approvals, budgets and idempotency are tested code, not prompts.</span></div>
+            </div>
             <p class="arch-note">Each service is built and tested on its own. Pending: the EKA integration and the end-to-end Compose demo; RERO is proposed, not started. Code private; walkthrough on request.</p>
             <div class="card-links">
               <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
@@ -752,13 +749,13 @@
               <p class="engagement"><span class="eng-domain">AI Engineering</span><strong>Focus:</strong> Production-grade Java AI platforms for regulated domains (portfolio projects)</p>
             </div>
             <ul>
-              <li>Built reconcile-ai, a multi-tenant financial-reconciliation platform in Java 21 and Spring Boot 3.5. A Spring AI pipeline investigates breaks with hybrid retrieval over pgvector, and each investigation runs through citation checks, a policy gate and maker-checker approval on a hash-chained audit trail.</li>
-              <li>Designed an AI governance gateway in Spring Boot that every model call goes through. It enforces per-tenant budgets, sensitive-data and risk policies, idempotent request handling and an invocation ledger. Calls whose outcome is unknown are held until a second person reconciles them, and are never retried.</li>
-              <li>Built agent features with LangChain4j: an investigation agent and supervised multi-agent modes using read-only, audited @Tools, plus a standalone incident-triage agent driven by Alertmanager webhooks with step, token and deadline limits.</li>
-              <li>Built EKA, a Python retrieval service (FastAPI, pgvector), and connected it to the Java platform&rsquo;s Keycloak realm. Each service accepts only tokens issued for its own audience, and tenants are isolated end to end; the cross-service integration is in progress.</li>
-              <li>Measured AI quality and cost with a 28-case evaluation harness on real models (single call: 27 of 28 root causes correct). When multi-agent designs cost 8–12x more for no real gain, I published that as a negative result and kept single call as the default.</li>
+              <li>Built <strong>reconcile-ai</strong>, a multi-tenant financial-reconciliation platform in Java 21 and Spring Boot 3.5. A Spring AI pipeline investigates breaks with hybrid retrieval over pgvector, and each investigation runs through citation checks, a policy gate and maker-checker approval on a hash-chained audit trail.</li>
+              <li>Designed <strong>ai-gateway</strong>, an AI governance gateway in Spring Boot that every model call goes through. It enforces per-tenant budgets, sensitive-data and risk policies, idempotent request handling and an invocation ledger. Calls whose outcome is unknown are held until a second person reconciles them, and are never retried.</li>
+              <li>Built <strong>LangChain4j agent features</strong>: an investigation agent and supervised multi-agent modes using read-only, audited @Tools, plus a standalone <strong>incident-triage agent</strong> driven by Alertmanager webhooks with step, token and deadline limits.</li>
+              <li>Built <strong>EKA</strong>, a Python retrieval service (FastAPI, pgvector), and connected it to the Java platform&rsquo;s Keycloak realm. Each service accepts only tokens issued for its own audience, and tenants are isolated end to end; the cross-service integration is in progress.</li>
+              <li>Measured AI quality and cost with a <strong>28-case evaluation harness</strong> on real models (single call: 27 of 28 root causes correct). When multi-agent designs cost 8–12x more for no real gain, I published that as a negative result and kept single call as the default.</li>
               <li>Shipped with production practices: Testcontainers integration suites (300+ tests), GitHub Actions CI with SBOM and Trivy image scanning, Kubernetes with KEDA autoscaling on queue depth, a Redis rate limit shared across replicas, Terraform for AWS (validated on LocalStack), and Prometheus/Grafana/OpenTelemetry observability.</li>
-              <li>Completed structured generative AI learning alongside the projects: IBM Generative AI for Java and Spring Developers specialization, DataCamp Associate AI Engineer for Developers, and DataCamp AI Fundamentals (verified links under Certifications).</li>
+              <li>Completed structured generative AI learning alongside the projects: <strong>IBM Generative AI for Java and Spring Developers</strong> specialization, <strong>DataCamp Associate AI Engineer for Developers</strong>, and <strong>DataCamp AI Fundamentals</strong> (verified links under Certifications).</li>
             </ul>
           </article>
 
@@ -771,9 +768,9 @@
               <p class="engagement"><span class="eng-domain">BFS domain</span><strong>Client:</strong> Top US-based banking client</p>
             </div>
             <ul>
-              <li>Delivered Java and Spring Boot microservices for an enterprise financial-services platform, modernizing reconciliation workflows for a US banking client.</li>
-              <li>Developed Java AI integration POCs using Spring AI and LangChain4j to evaluate LLM-powered transaction anomaly detection and intelligent reconciliation suggestions within the existing Spring Boot microservices architecture.</li>
-              <li>Prototyped a RAG-based document assistant using Spring AI with pgvector to enable natural language querying of reconciliation reports and banking policy documents.</li>
+              <li>Delivered Java and Spring Boot microservices for an enterprise financial-services platform, modernizing <strong>reconciliation workflows</strong> for a <strong>US banking client</strong>.</li>
+              <li>Developed <strong>Java AI integration POCs</strong> using Spring AI and LangChain4j to evaluate LLM-powered transaction anomaly detection and intelligent reconciliation suggestions within the existing Spring Boot microservices architecture.</li>
+              <li>Prototyped a <strong>RAG-based document assistant</strong> using Spring AI with pgvector to enable natural language querying of reconciliation reports and banking policy documents.</li>
               <li>Worked with secure credential management, Docker and Kubernetes deployments, and Jenkins / UrbanCode Deploy delivery pipelines.</li>
               <li>Built Angular interfaces integrated with Java REST APIs, with unit tests written alongside the code.</li>
               <li>Integrated AI productivity tools (GitHub Copilot, ChatGPT-4) into the SDLC, measurably reducing feature delivery cycles by 30%.</li>
@@ -783,7 +780,6 @@
           <article class="timeline-item">
             <div class="timeline-top">
               <h3>Java Developer <span class="company">· Infosys</span></h3>
-              <span class="date">Nov 2017 – Apr 2021</span>
             </div>
             <div class="engagements" aria-label="Clients and domains">
               <p class="engagement"><span class="eng-domain">Health Insurance</span><strong>Client:</strong> MetLife, USA<span class="sep">|</span><strong>Projects:</strong> Enterprise Online Store (EOS) and RIS (Retirement &amp; Income Solutions) applications</p>
@@ -791,12 +787,12 @@
               <p class="engagement"><span class="eng-domain">Manufacturing</span><strong>Client:</strong> Agricultural machinery manufacturer<span class="sep">|</span><strong>Project:</strong> PIM (Product Information Management)</p>
             </div>
             <ul>
-              <li>Delivered backend microservices for the MetLife EOS application in the health insurance domain, built for high-volume transactions and seamless integration with business applications.</li>
-              <li>Designed and exposed intranet Spring Boot microservice APIs, secured via API Connect, to expose Big Data EOS datasets to downstream business applications with strict access control; worked with product teams on requirements analysis and feature delivery.</li>
-              <li>Ensured a multi-module architecture supporting scalability, using asynchronous Kafka communication for system responsiveness and reliability, with JUnit and Mockito unit test suites across the microservice modules.</li>
-              <li>Developed and enhanced core features and REST APIs of the RIS Financial Work Station (FWS), a retirement and income product platform, under strict SLA requirements in a regulated financial-services domain.</li>
-              <li>Built Angular components and Java APIs for WMG&rsquo;s MEAD music licensing platform, with XML/XSD data validation pipelines and FTL template integrations.</li>
-              <li>Executed an SAP Commerce (Hybris) Back Office upgrade and storefront enhancements for a global agricultural machinery manufacturer&rsquo;s multi-region e-commerce catalog.</li>
+              <li>Delivered backend microservices for the <strong>MetLife EOS</strong> application in the <strong>health insurance</strong> domain, built for high-volume transactions and seamless integration with business applications.</li>
+              <li>Designed and exposed intranet Spring Boot microservice APIs, secured via API Connect, to expose <strong>Big Data EOS datasets</strong> to downstream business applications with strict access control; worked with product teams on requirements analysis and feature delivery.</li>
+              <li>Ensured a multi-module architecture supporting scalability, using asynchronous <strong>Kafka</strong> communication for system responsiveness and reliability, with JUnit and Mockito unit test suites across the microservice modules.</li>
+              <li>Developed and enhanced core features and REST APIs of the <strong>RIS Financial Work Station (FWS)</strong>, a retirement and income product platform, under strict SLA requirements in a regulated financial-services domain.</li>
+              <li>Built Angular components and Java APIs for <strong>WMG&rsquo;s MEAD</strong> music licensing platform, with XML/XSD data validation pipelines and FTL template integrations.</li>
+              <li>Executed an <strong>SAP Commerce (Hybris)</strong> Back Office upgrade and storefront enhancements for a global <strong>agricultural machinery manufacturer</strong>&rsquo;s multi-region e-commerce catalog.</li>
             </ul>
           </article>
         </div>
