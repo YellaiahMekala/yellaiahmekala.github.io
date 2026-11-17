@@ -293,10 +293,12 @@
     .fl-planned .fl-num { background: #fff; color: var(--blue); border: 1.5px dashed var(--blue); }
     .fl-tag { display: inline-block; margin-left: 6px; padding: 0 7px; border-radius: 999px; background: #fff5df; color: #8b5a00; font-size: .62rem; font-weight: 800; vertical-align: middle; }
     @keyframes fl-num-glow { 0%, 14%, 100% { box-shadow: none; } 3%, 11% { box-shadow: 0 0 0 4px rgba(23, 105, 224, .18); } }
-    .arch-figure { margin: 18px 0 0; overflow-x: auto; }
-    .arch-figure a { display: block; }
-    .arch-figure img { display: block; width: 100%; min-width: 760px; height: auto; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
     #architecture { scroll-margin-top: 90px; }
+    .fl-layer { font-size: .56rem; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); font-weight: 800; }
+    .fl-tag.fl-ok { background: #e3f5ee; color: var(--green); }
+    .principles-lite { margin: 0; padding: 0 0 0 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 28px; font-size: .72rem; line-height: 1.5; color: var(--muted); }
+    .principles-lite strong { color: var(--ink); }
+    @media (max-width: 600px) { .principles-lite { grid-template-columns: minmax(0, 1fr); } }
     /* "Live" flow: a highlight travels left to right through the steps, then rests. Off for reduced motion. */
     @keyframes arch-step-glow {
       0%, 14%, 100% { border-color: var(--line); box-shadow: none; }
@@ -407,7 +409,7 @@
           </p>
           <ul class="hero-facts" aria-label="Experience summary">
             <li>5+ Years MNC Experience</li>
-            <li>3 Years Freelancer</li>
+            <li>2 Years Freelancer</li>
             <li>Banking | Insurance | Manufacturing</li>
           </ul>
           <div class="tag-list" aria-label="Areas of focus">
@@ -658,15 +660,26 @@
             <ol class="flow-lite" aria-label="Platform target request flow">
               <li><span class="fl-num">1</span><strong>Identity</strong><small>One Keycloak realm, a client per tenant, and an audience per service. Local spike S-1 passed.</small></li>
               <li><span class="fl-num">2</span><strong>reconcile-ai</strong><small>Java system of record: breaks, maker-checker approvals and the audit trail.</small></li>
-              <li class="fl-planned"><span class="fl-num">3</span><strong>EKA knowledge <span class="fl-tag">Planned</span></strong><small>Tenant-isolated retrieval for evidence. Service identity reaching EKA passed spike S-2; the integration itself is not started.</small></li>
+              <li><span class="fl-num">3</span><strong>EKA knowledge <span class="fl-tag">Built · integration pending</span></strong><small>Tenant-isolated retrieval for evidence. EKA is built; service identity reaching it passed spike S-2. Only the integration is pending.</small></li>
               <li class="fl-core"><span class="fl-num">4</span><strong>ai-gateway</strong><small>Governed model calls. The route is built in reconcile-ai and off by default; spike S-3 recorded usage against the token&rsquo;s tenant.</small></li>
             </ol>
-            <figure class="arch-figure" id="architecture">
-              <a href="projects/platform/images/architecture-ecosystem.png" target="_blank" rel="noopener noreferrer" title="Open the full-size architecture diagram">
-                <img src="projects/platform/images/architecture-ecosystem.png" width="2360" height="1762" loading="lazy" alt="AI Platform Architecture Ecosystem. Enterprise AI Platform with four layers: Knowledge layer, EKA (built); Decision layer, RERO (proposed, not built); Execution layer, reconcile-ai (built); Governance layer, ai-gateway (built). Design principles: Model Proposes, Humans Decide; Retrieval Before Generation; Evaluation Over Intuition; Least-Privilege Tool Access; Auditability By Design; Deterministic Business Logic.">
-              </a>
-            </figure>
-            <p class="arch-note">Not yet done: the EKA knowledge integration, the end-to-end Compose demo and RERO are not started. Code private; walkthrough on request.</p>
+            <div class="arch-title" id="architecture">Architecture · Enterprise AI Platform</div>
+            <ol class="flow-lite" aria-label="AI platform ecosystem: four layers">
+              <li><span class="fl-num">K</span><span class="fl-layer">Knowledge layer</span><strong>EKA <span class="fl-tag fl-ok">Built</span></strong><small>Tenant-isolated hybrid retrieval with citations and refusal. Python core, Java edge, Angular UI.</small></li>
+              <li class="fl-planned"><span class="fl-num">D</span><span class="fl-layer">Decision layer</span><strong>RERO <span class="fl-tag">Proposed</span></strong><small>A proposed Python recommendation service. Not built yet.</small></li>
+              <li><span class="fl-num">E</span><span class="fl-layer">Execution layer</span><strong>reconcile-ai <span class="fl-tag fl-ok">Built</span></strong><small>Java system of record: breaks, maker-checker approvals and a hash-chained audit trail.</small></li>
+              <li class="fl-core"><span class="fl-num">G</span><span class="fl-layer">Governance layer</span><strong>ai-gateway <span class="fl-tag fl-ok">Built</span></strong><small>Authenticated, masked, budgeted and recorded model calls.</small></li>
+            </ol>
+            <div class="arch-title">Design principles</div>
+            <ul class="principles-lite">
+              <li><strong>Model proposes, humans decide.</strong> Cited proposals; maker and checker are different people.</li>
+              <li><strong>Retrieval before generation.</strong> Answers come from cited evidence; weak evidence means a refusal.</li>
+              <li><strong>Evaluation over intuition.</strong> Fixed question sets and a written decision rule.</li>
+              <li><strong>Least-privilege tool access.</strong> Read-only, role-checked, audited tools; tenant only from the signed token.</li>
+              <li><strong>Auditability by design.</strong> Hash-chained audit trail and one ledger row per model call.</li>
+              <li><strong>Deterministic business logic.</strong> Approvals, budgets and idempotency are tested code, not prompts.</li>
+            </ul>
+            <p class="arch-note">Each service is built and tested on its own. Pending: the EKA integration and the end-to-end Compose demo; RERO is proposed, not started. Code private; walkthrough on request.</p>
             <div class="card-links">
               <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
               <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/BRD.md" target="_blank" rel="noopener noreferrer">BRD →</a>
@@ -739,10 +752,10 @@
               <p class="engagement"><span class="eng-domain">AI Engineering</span><strong>Focus:</strong> Production-grade Java AI platforms for regulated domains (portfolio projects)</p>
             </div>
             <ul>
-              <li>Built ReconcileAI, a multi-tenant financial-reconciliation platform in Java 21 and Spring Boot 3.5. A Spring AI pipeline investigates breaks with hybrid retrieval over pgvector, and each investigation runs through citation checks, a policy gate and maker-checker approval on a hash-chained audit trail.</li>
+              <li>Built reconcile-ai, a multi-tenant financial-reconciliation platform in Java 21 and Spring Boot 3.5. A Spring AI pipeline investigates breaks with hybrid retrieval over pgvector, and each investigation runs through citation checks, a policy gate and maker-checker approval on a hash-chained audit trail.</li>
               <li>Designed an AI governance gateway in Spring Boot that every model call goes through. It enforces per-tenant budgets, sensitive-data and risk policies, idempotent request handling and an invocation ledger. Calls whose outcome is unknown are held until a second person reconciles them, and are never retried.</li>
               <li>Built agent features with LangChain4j: an investigation agent and supervised multi-agent modes using read-only, audited @Tools, plus a standalone incident-triage agent driven by Alertmanager webhooks with step, token and deadline limits.</li>
-              <li>Integrated a Python retrieval service (FastAPI, pgvector) with the Java platform under one Keycloak realm. Each service accepts only tokens issued for its own audience, and tenants are isolated end to end.</li>
+              <li>Built EKA, a Python retrieval service (FastAPI, pgvector), and connected it to the Java platform&rsquo;s Keycloak realm. Each service accepts only tokens issued for its own audience, and tenants are isolated end to end; the cross-service integration is in progress.</li>
               <li>Measured AI quality and cost with a 28-case evaluation harness on real models (single call: 27 of 28 root causes correct). When multi-agent designs cost 8–12x more for no real gain, I published that as a negative result and kept single call as the default.</li>
               <li>Shipped with production practices: Testcontainers integration suites (300+ tests), GitHub Actions CI with SBOM and Trivy image scanning, Kubernetes with KEDA autoscaling on queue depth, a Redis rate limit shared across replicas, Terraform for AWS (validated on LocalStack), and Prometheus/Grafana/OpenTelemetry observability.</li>
               <li>Completed structured generative AI learning alongside the projects: IBM Generative AI for Java and Spring Developers specialization, DataCamp Associate AI Engineer for Developers, and DataCamp AI Fundamentals (verified links under Certifications).</li>
@@ -764,19 +777,6 @@
               <li>Worked with secure credential management, Docker and Kubernetes deployments, and Jenkins / UrbanCode Deploy delivery pipelines.</li>
               <li>Built Angular interfaces integrated with Java REST APIs, with unit tests written alongside the code.</li>
               <li>Integrated AI productivity tools (GitHub Copilot, ChatGPT-4) into the SDLC, measurably reducing feature delivery cycles by 30%.</li>
-            </ul>
-          </article>
-
-          <article class="timeline-item">
-            <div class="timeline-top">
-              <h3>Senior Java Developer · Independent Consulting</h3>
-              <span class="date">May 2021 – Jul 2023</span>
-            </div>
-            <ul>
-              <li>Built Java/JEE and Spring Boot services, REST and SOAP APIs, and integrations using Kafka and JMS.</li>
-              <li>Worked with Terraform, Ansible, Docker, AWS, GCP, MySQL, and MongoDB across consulting engagements.</li>
-              <li>Tuned MySQL queries to cut slow queries in one engagement.</li>
-              <li>Supported CI/CD and release automation using TeamCity, Jenkins, and UrbanCode Deploy.</li>
             </ul>
           </article>
 
@@ -868,7 +868,7 @@
         <div class="eyebrow">Contact</div>
         <h2>Let’s talk about Java and enterprise AI</h2>
         <p class="contact-lead">
-          I am an Immediate Joiner (0-Day Notice Period) available for Senior Java AI roles
+          I am an Immediate Joiner available for Senior Java AI roles
           in Hyderabad. Reach me at
           <a href="mailto:yellaiahmekala614@gmail.com">yellaiahmekala614@gmail.com</a>
         </p>
