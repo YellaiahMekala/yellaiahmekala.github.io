@@ -234,6 +234,8 @@
       background: var(--navy);
       padding: 68px 0;
     }
+    /* Same specificity as the alternating-section rule above, and later, so the contact band stays navy. */
+    section.contact { background: var(--navy); }
     .contact .eyebrow { color: #a9c9ff; }
     .contact h2 { color: #fff; }
     .contact p { color: #c6d2e1; max-width: 660px; }
@@ -324,6 +326,12 @@
     .principle { padding: 18px 20px; }
     .principle h3 { margin: 0; font-size: 1rem; }
     .principle p { margin: 8px 0 0; font-size: .9rem; }
+    .card.small .status-row { margin-bottom: 8px; }
+    .engagements { display: grid; gap: 8px; margin: 14px 0 0; }
+    .engagement { margin: 0; padding: 9px 14px; border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0; background: var(--pale); color: #43536b; font-size: .92rem; line-height: 1.55; }
+    .engagement strong { color: var(--ink); }
+    .engagement .sep { margin: 0 8px; color: #9fb0c6; }
+    .eng-domain { display: inline-block; margin-right: 10px; padding: 1px 10px; border-radius: 999px; background: #eaf2ff; color: var(--blue-dark); font-size: .74rem; font-weight: 800; letter-spacing: .02em; vertical-align: middle; }
     .contact .contact-lead { font-size: 1.15rem; color: #fff; max-width: 760px; }
     .contact .contact-lead a { color: #a9c9ff; font-weight: 700; }
     @media (max-width: 900px) { .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); } .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -623,40 +631,39 @@
 
           <article class="card featured">
             <div class="status-row">
-              <span class="status st-lang">Java · Flagship</span>
-              <span class="status">Built and tested</span>
-              <span class="status st-ci">CI green</span>
-              <span class="status st-live">Live-verified with real models</span>
+              <span class="status status-planned">Platform · Integration and feature testing in progress</span>
+              <span class="status">Identity spikes passed</span>
             </div>
-            <h3><a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">Enterprise Spring AI Support Assistant</a></h3>
+            <h3>Enterprise AI Platform Integration</h3>
             <p>
-              Answers customer questions from company documents with citations, or declines when
-              the evidence is weak. Every model call goes through one governed path with a token
-              budget, sensitive-data checks and a circuit breaker. The repository is public.
+              An integration connecting reconcile-ai, EKA, and ai-gateway through explicit
+              service contracts. RERO is a proposed Python recommendation service. The
+              end-to-end integration should be treated as in progress until its cross-service
+              tests and demonstration have passed.
             </p>
-            <p class="stack">Java 21 · Spring Boot · Spring AI · pgvector · Keycloak · Resilience4j · Angular</p>
-            <div class="arch-title">How a request flows</div>
-            <div class="arch" role="group" aria-label="Support Assistant request flow">
-              <div class="arch-step"><span class="arch-num">1</span><strong>Sign in &amp; ask</strong><small>Angular 20 UI with streamed answers. Keycloak roles: customer and agent.</small></div>
+            <p class="stack">Java · Python · HTTP contracts · Identity · AI governance</p>
+            <div class="arch-title">Target request flow</div>
+            <div class="arch" role="group" aria-label="Platform target request flow">
+              <div class="arch-step"><span class="arch-num">1</span><strong>Identity</strong><small>One Keycloak realm, a client per tenant, and an audience per service. Local spike S-1 passed.</small></div>
               <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step"><span class="arch-num">2</span><strong>Ground</strong><small>pgvector search with the access filter inside the SQL. Declines when the evidence is weak.</small></div>
+              <div class="arch-step"><span class="arch-num">2</span><strong>reconcile-ai</strong><small>Java system of record: breaks, maker-checker approvals and the audit trail.</small></div>
               <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step arch-core"><span class="arch-num">3</span><strong>One governed path</strong><small>Admit (sensitive-data policy, size check, budget reservation), guarded call, then settle the budget.</small></div>
+              <div class="arch-step arch-planned"><span class="arch-num">3</span><strong>EKA knowledge</strong><span class="tag-planned">Planned</span><small>Tenant-isolated retrieval for evidence. Service identity reaching EKA passed spike S-2; the integration itself is not started.</small></div>
               <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step"><span class="arch-num">4</span><strong>Answer</strong><small>Citations are validated against the retrieved chunks, then streamed to the UI.</small></div>
+              <div class="arch-step arch-core"><span class="arch-num">4</span><strong>ai-gateway</strong><small>Governed model calls. The route is built in reconcile-ai and off by default; spike S-3 recorded usage against the token&rsquo;s tenant.</small></div>
             </div>
             <div class="evidence-title">How it was tested</div>
             <ul class="evidence">
-              <li><strong>End to end with real models:</strong> run manually against real model providers (Ollama and OpenAI) with synthetic data, outside CI. Automated tests use fakes and mocks.</li>
-              <li><strong>Concurrency-safe budget:</strong> the daily budget is one atomic SQL update, checked under concurrent requests.</li>
-              <li><strong>Ownership in SQL:</strong> asking for someone else&rsquo;s order returns the same 404 as a missing one.</li>
-              <li><strong>Mutation-checked:</strong> removing a rule makes the matching tests fail.</li>
+              <li><strong>Identity spikes S-1 to S-3</strong> passed locally, each with an entry in the platform evidence register.</li>
+              <li><strong>Contracts:</strong> cross-service JSON Schemas are checked by provider and consumer tests in the service repos.</li>
             </ul>
+            <p class="arch-note">Not yet done: the EKA knowledge integration, the end-to-end Compose demo and RERO are not started. Code private; walkthrough on request.</p>
             <div class="card-links">
-              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">View repository →</a>
-              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
-              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/support-assistant/README.md" target="_blank" rel="noopener noreferrer">Project evidence →</a>
-              <a href="projects/support-assistant/images/request-flow.png" target="_blank" rel="noopener noreferrer">Architecture diagram →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/BRD.md" target="_blank" rel="noopener noreferrer">BRD →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/TDD.md" target="_blank" rel="noopener noreferrer">TDD →</a>
+              <a href="projects/platform/images/request-flow.png" target="_blank" rel="noopener noreferrer">Architecture diagram →</a>
+              <a href="https://www.linkedin.com/in/yellaiah-mekala/" target="_blank" rel="noopener noreferrer">Request code access via LinkedIn →</a>
             </div>
           </article>
         </div>
@@ -664,23 +671,31 @@
         <h3 class="group-title">More projects</h3>
         <div class="project-grid compact">
           <article class="card small">
+            <div class="status-row">
+              <span class="status st-lang">Java · Public repository</span>
+              <span class="status">Built and tested</span>
+              <span class="status st-ci">CI green</span>
+              <span class="status st-live">Live-verified</span>
+            </div>
+            <h3><a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">Enterprise Spring AI Support Assistant</a></h3>
+            <p>Answers customer questions from company documents with citations, or declines when the evidence is weak. Every model call goes through one governed path with a token budget, sensitive-data checks and a circuit breaker.</p>
+            <p>Run end to end against real models (Ollama and OpenAI) outside CI, with concurrency, ownership and mutation checks. Automated tests use fakes.</p>
+            <p class="stack">Java 21 · Spring Boot · Spring AI · pgvector · Keycloak · Angular</p>
+            <div class="card-links">
+              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant" target="_blank" rel="noopener noreferrer">Repository →</a>
+              <a href="https://github.com/YellaiahMekala/SpringAI_SupportAssistant/actions" target="_blank" rel="noopener noreferrer">CI runs →</a>
+              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/support-assistant/README.md" target="_blank" rel="noopener noreferrer">Evidence →</a>
+              <a href="projects/support-assistant/images/request-flow.png" target="_blank" rel="noopener noreferrer">Architecture →</a>
+            </div>
+          </article>
+
+          <article class="card small">
             <span class="status status-review">Java · AI agent · Portfolio project</span>
             <h3><a href="https://github.com/YellaiahMekala/ops-agent" target="_blank" rel="noopener noreferrer">ops-agent</a></h3>
             <p>An incident-triage agent for the gateway demo stack. An alert arrives from Alertmanager; the agent investigates with four read-only, audited tools (Prometheus, logs, runbook, health) and emails the owner a summary. It changes nothing.</p>
             <p class="stack">Java · LangChain4j · Prometheus · Alertmanager</p>
             <div class="card-links">
               <a href="https://github.com/YellaiahMekala/ops-agent" target="_blank" rel="noopener noreferrer">Repository →</a>
-            </div>
-          </article>
-
-          <article class="card small">
-            <span class="status status-planned">Platform · In progress · Roadmap</span>
-            <h3><a href="#architecture">Enterprise AI Platform Integration</a></h3>
-            <p>A planned integration of reconcile-ai, EKA and ai-gateway through explicit service contracts. Identity spikes have passed; the end-to-end integration is not yet demonstrated. Shown with its ecosystem diagram under Architecture.</p>
-            <p class="stack">Java · Python · HTTP contracts · Identity · AI governance</p>
-            <div class="card-links">
-              <a href="#architecture">Ecosystem &amp; flow →</a>
-              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/README.md" target="_blank" rel="noopener noreferrer">Details →</a>
             </div>
           </article>
 
@@ -719,48 +734,7 @@
           <div class="arch-arrow" aria-hidden="true">&rarr;</div>
           <div class="arch-step arch-core"><span class="arch-layer">Governance layer</span><strong>ai-gateway</strong><small>Authenticated, masked, budgeted and recorded model calls. Built.</small></div>
         </div>
-        <p class="arch-note">Each service is built and tested on its own. The cross-service integration is planned, and RERO does not exist yet.</p>
-
-        <h3 class="group-title" style="margin-top:34px">Platform integration: roadmap, not yet demonstrated</h3>
-        <div class="project-grid">
-          <article class="card featured">
-            <div class="status-row">
-              <span class="status status-planned">Platform · In progress · Roadmap</span>
-              <span class="status">Identity spikes passed</span>
-            </div>
-            <h3>Enterprise AI Platform Integration</h3>
-            <p>
-              A planned integration connecting reconcile-ai, EKA, and ai-gateway through
-              explicit service contracts. RERO is a proposed Python recommendation service.
-              The end-to-end integration should be treated as planned until its cross-service
-              tests and demonstration have passed.
-            </p>
-            <p class="stack">Java · Python · HTTP contracts · Identity · AI governance</p>
-            <div class="arch-title">Target request flow (design)</div>
-            <div class="arch" role="group" aria-label="Platform target request flow">
-              <div class="arch-step"><span class="arch-num">1</span><strong>Identity</strong><small>One Keycloak realm, a client per tenant, and an audience per service. Local spike S-1 passed.</small></div>
-              <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step"><span class="arch-num">2</span><strong>reconcile-ai</strong><small>Java system of record: breaks, maker-checker approvals and the audit trail.</small></div>
-              <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step arch-planned"><span class="arch-num">3</span><strong>EKA knowledge</strong><span class="tag-planned">Planned</span><small>Tenant-isolated retrieval for evidence. Service identity reaching EKA passed spike S-2; the integration itself is not started.</small></div>
-              <div class="arch-arrow" aria-hidden="true">&rarr;</div>
-              <div class="arch-step arch-core"><span class="arch-num">4</span><strong>ai-gateway</strong><small>Governed model calls. The route is built in reconcile-ai and off by default; spike S-3 recorded usage against the token&rsquo;s tenant.</small></div>
-            </div>
-            <div class="evidence-title">How it was tested</div>
-            <ul class="evidence">
-              <li><strong>Identity spikes S-1 to S-3</strong> passed locally, each with an entry in the platform evidence register.</li>
-              <li><strong>Contracts:</strong> cross-service JSON Schemas are checked by provider and consumer tests in the service repos.</li>
-            </ul>
-            <p class="arch-note">Not yet done: the EKA knowledge integration, the end-to-end Compose demo and RERO are not started. Code private; walkthrough on request.</p>
-            <div class="card-links">
-              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/README.md" target="_blank" rel="noopener noreferrer">Full project details →</a>
-              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/BRD.md" target="_blank" rel="noopener noreferrer">BRD →</a>
-              <a href="https://github.com/YellaiahMekala/yellaiahmekala.github.io/blob/main/projects/platform/TDD.md" target="_blank" rel="noopener noreferrer">TDD →</a>
-              <a href="projects/platform/images/request-flow.png" target="_blank" rel="noopener noreferrer">Architecture diagram →</a>
-              <a href="https://www.linkedin.com/in/yellaiah-mekala/" target="_blank" rel="noopener noreferrer">Request code access via LinkedIn →</a>
-            </div>
-          </article>
-        </div>
+        <p class="arch-note">Each service is built and tested on its own. Cross-service integration and feature testing are in progress (see Enterprise AI Platform Integration above), and RERO does not exist yet.</p>
 
         <h3 class="group-title" style="margin-top:34px">Design principles</h3>
         <div class="principles">
@@ -817,11 +791,16 @@
               <h3>Senior Cloud Engineer <span class="company">· LTIMindtree</span></h3>
               <span class="date">Aug 2023 – May 2025</span>
             </div>
+            <div class="engagements" aria-label="Domain and client">
+              <p class="engagement"><span class="eng-domain">BFS domain</span><strong>Client:</strong> Top US-based banking client</p>
+            </div>
             <ul>
               <li>Delivered Java and Spring Boot microservices for an enterprise financial-services platform, modernizing reconciliation workflows for a US banking client.</li>
+              <li>Developed Java AI integration POCs using Spring AI and LangChain4j to evaluate LLM-powered transaction anomaly detection and intelligent reconciliation suggestions within the existing Spring Boot microservices architecture.</li>
+              <li>Prototyped a RAG-based document assistant using Spring AI with pgvector to enable natural language querying of reconciliation reports and banking policy documents.</li>
               <li>Worked with secure credential management, Docker and Kubernetes deployments, and Jenkins / UrbanCode Deploy delivery pipelines.</li>
               <li>Built Angular interfaces integrated with Java REST APIs, with unit tests written alongside the code.</li>
-              <li>Integrated GitHub Copilot and ChatGPT-4 into development workflows for feature delivery and code review.</li>
+              <li>Integrated AI productivity tools (GitHub Copilot, ChatGPT-4) into the SDLC, measurably reducing feature delivery cycles by 30%.</li>
             </ul>
           </article>
 
@@ -842,6 +821,11 @@
             <div class="timeline-top">
               <h3>Java Developer <span class="company">· Infosys</span></h3>
               <span class="date">Nov 2017 – Apr 2021</span>
+            </div>
+            <div class="engagements" aria-label="Clients and domains">
+              <p class="engagement"><span class="eng-domain">Health Insurance</span><strong>Client:</strong> MetLife, USA<span class="sep">|</span><strong>Projects:</strong> Enterprise Online Store (EOS) and RIS (Retirement &amp; Income Solutions) applications</p>
+              <p class="engagement"><span class="eng-domain">Media</span><strong>Client:</strong> WMG, USA<span class="sep">|</span><strong>Project:</strong> MEAD, a music albums and artists data platform</p>
+              <p class="engagement"><span class="eng-domain">Manufacturing</span><strong>Client:</strong> Agricultural machinery manufacturer<span class="sep">|</span><strong>Project:</strong> PIM (Product Information Management)</p>
             </div>
             <ul>
               <li>Delivered backend services and APIs for clients in health insurance, financial services, media, and manufacturing.</li>
